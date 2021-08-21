@@ -1,0 +1,14 @@
+---
+version: "2.1"
+services:
+  filebrowser:
+    image: docker.io/filebrowser/filebrowser:latest
+    container_name: filebrowser
+    restart: unless-stopped
+    command: >
+      --config=/config/filebrowser.json --database=/config/database.db
+    volumes:
+      - ./config:/config
+      - /path/on/host:/srv:ro
+    expose:
+      - 80
