@@ -7,11 +7,8 @@ services:
     image: docker.io/filebrowser/filebrowser:latest
     container_name: filebrowser
     restart: unless-stopped
-    # The --config parameter is ignored if the config file does not exist.
-    # The config file must be created manually for this to take effect.
-    # The database is created automatically if not already present.
     command: >
-      --config=/config/filebrowser.json --database=/config/database.db --address=0.0.0.0 --port=8080
+      --database=/config/database.db --address=0.0.0.0 --port=8080
     volumes:
       - ./config:/config
       # Make directories on the host available within the container.
