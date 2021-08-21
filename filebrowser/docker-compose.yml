@@ -19,7 +19,7 @@ services:
       # Remove ":ro" to enable write access.
       - /path/on/host:/srv:ro
     expose:
-      - 80
+      - 8080
 networks:
   default:
     driver: bridge
