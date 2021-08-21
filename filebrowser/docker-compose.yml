@@ -1,14 +1,30 @@
 ---
-version: "2.1"
+version: "3"
 services:
   filebrowser:
+    # Upstream project website:
+    # https://github.com/filebrowser/filebrowser
     image: docker.io/filebrowser/filebrowser:latest
     container_name: filebrowser
     restart: unless-stopped
+    # The --config parameter is ignored if the config file does not exist.
+    # The config file must be created manually for this to take effect.
+    # The database is created automatically if not already present.
     command: >
       --config=/config/filebrowser.json --database=/config/database.db
     volumes:
       - ./config:/config
+      # Make directories on the host available within the container.
+      # Adjust and add additional paths, as needed.
+      # Remove ":ro" to enable write access.
       - /path/on/host:/srv:ro
     expose:
       - 80
+networks:
+  default:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      # Adjust subnet as needed
+      - subnet: 172.16.1.0/27
