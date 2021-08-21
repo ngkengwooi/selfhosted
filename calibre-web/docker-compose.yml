@@ -1,0 +1,24 @@
+---
+version: "3"
+services:
+  calibreweb:
+    image: docker.io/linuxserver/calibre-web:latest
+    container_name: calibre-web
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - DOCKER_MODS=linuxserver/calibreweb:calibre
+    volumes:
+      - ./config:/config
+      - ./books:/books
+    expose:
+      - 8083
+networks:
+  default:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.16.5.0/27
