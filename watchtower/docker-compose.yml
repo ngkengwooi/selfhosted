@@ -1,0 +1,23 @@
+services:
+  watchtower:
+    image: docker.io/containrrr/watchtower:latest
+    container_name: watchtower
+    restart: unless-stopped
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Europe/London
+      WATCHTOWER_CLEANUP: true
+      WATCHTOWER_INCLUDE_RESTARTING: false
+      WATCHTOWER_INCLUDE_STOPPED: false
+      WATCHTOWER_REVIVE_STOPPED: false
+      WATCHTOWER_SCHEDULE: 0 0 5 * * *
+      WATCHTOWER_NO_RESTART: false
+      WATCHTOWER_NO_PULL: false
+      WATCHTOWER_MONITOR_ONLY: false
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - backend
+networks:
+  backend:
