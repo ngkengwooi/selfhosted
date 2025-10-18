@@ -1,0 +1,55 @@
+services:
+  adguardhome:
+    image: docker.io/adguard/adguardhome:latest
+    container_name: adguardhome
+    restart: unless-stopped
+    user: "1000:1000"
+    cap_add:
+      - NET_ADMIN
+    environment:
+      TZ: Europe/London
+    volumes:
+      - ./data/adguardhome/work:/opt/adguardhome/work
+      - ./data/adguardhome/conf:/opt/adguardhome/conf
+    ports:
+      #- 10857:443/tcp
+      #- 10857:443/udp
+      - 53:53/tcp
+      - 53:53/udp
+      #- 67:67/udp
+      #- 68:68/tcp
+      #- 68:68/udp
+      - 9980:80/tcp
+      #- 443:443/tcp
+      #- 443:443/udp
+      - 853:853/tcp
+      - 853:853/udp
+      #- 3000:3000/tcp
+      - 5443:5443/tcp
+      - 5443:5443/udp
+      #- 6060:6060/tcp
+    depends_on:
+      - unbound
+    networks:
+      frontend:
+        ipv4_address: 172.16.1.3
+  unbound:
+    image: docker.io/alpinelinux/unbound:latest
+    container_name: unbound
+    restart: unless-stopped
+    environment:
+      TZ: Europe/London
+    volumes:
+      - ./data/unbound:/etc/unbound
+    expose:
+      - 53
+    networks:
+      frontend:
+        ipv4_address: 172.16.1.2
+networks:
+  frontend:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.1.0/24
+          gateway: 172.16.1.1
